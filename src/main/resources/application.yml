@@ -1,0 +1,9 @@
+spring:
+  application:
+    name:
+      tempchat
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    enabled: true
