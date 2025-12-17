@@ -1,0 +1,19 @@
+package com.example.tempchat;
+
+import com.example.tempchat.dto.UserDto;
+import jakarta.servlet.http.HttpSession;
+
+public class SessionController {
+
+    public void setSessionValue(HttpSession httpSession, UserDto userDto){
+        SessionUtility.setSessionAttribute(httpSession, "username", userDto.getUsername());
+        SessionUtility.setSessionAttribute(httpSession, "firstName", userDto.getFirstName());
+        SessionUtility.setSessionAttribute(httpSession, "lastName", userDto.getLastName());
+        SessionUtility.setSessionAttribute(httpSession, "id", userDto.getId());
+    }
+
+    public Object getSessionValue(HttpSession httpSession, String key){
+        return SessionUtility.getSessionAttribute(httpSession, key);
+    }
+
+}

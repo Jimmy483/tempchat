@@ -1,0 +1,77 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login Page</title>
+</head>
+<link href="/css/loginCss.css" rel="stylesheet" type="text/css"></link>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+  function checkLogin(e){
+    e.preventDefault();
+    var username=$('#username').val();
+    var password=$('#password').val();
+
+    if(username=='' || password==''){
+      alert('Fields cannot be empty');
+      return;
+    }
+
+    alert("just before");
+    $.ajax({
+      url:'/checkCredentials',
+      method: 'GET',
+      data:{
+        username,
+        password
+      },
+      success:function(loginSuccess){
+        alert("result = " + loginSuccess);
+        if(loginSuccess){
+          window.location.href='/';
+        }else{
+          alert('The username or password was incorrect');
+        }
+      },
+      error:function(){
+        alert("Smth went wrong");
+      }
+    })
+  }
+</script>
+<body>
+  <div class="container-fluid">
+    <div class="row main-content bg-success text-center">
+      <div class="col-md-4 text-center company__info">
+        <span class="company__logo"><h2><span class="fa fa-android"></span></h2></span>
+        <h4 class="company_title">Temchat</h4>
+      </div>
+      <div class="col-md-8 col-xs-12 col-sm-12 login_form ">
+        <div class="container-fluid">
+          <div class="row">
+            <h2>Log In</h2>
+          </div>
+          <div class="row">
+            <form control="" class="form-group">
+              <div class="row">
+                <input type="text" name="username" id="username" class="form__input" placeholder="Username">
+              </div>
+              <div class="row">
+                <input type="password" name="password" id="password" class="form__input" placeholder="Password">
+              </div>
+              <div class="row">
+                <input type="checkbox" name="remember_me" id="remember_me" class="">
+                <label for="remember_me">Remember Me!</label>
+              </div>
+              <div class="row">
+                <input type="submit" value="Submit" class="btn" onclick="checkLogin(event)">
+              </div>
+            </form>
+          </div>
+          <div class="row">
+            <p>Don't have an account? <a href="#">Register Here</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

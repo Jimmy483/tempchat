@@ -7,3 +7,17 @@ spring:
     suffix: .html
     mode: HTML
     enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#    database-platform: org.hibernate.dialect.MySQL8Dialect
+  datasource:
+    url: jdbc:mysql://localhost:3306/main
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #    initialization-mode: always
+    hikari:
+      maximum-pool-size: 10
