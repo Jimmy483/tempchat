@@ -102,6 +102,50 @@ body{
     color: #ffffff;
 }
 
+.card-header{
+    display: flex;
+}
+
+.dropdown{
+    position: relative;
+    display: inline-block;
+    margin-left: auto;
+}
+
+.dropdown-button {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: #17202b;
+  min-width: 100%;
+  z-index: 1;
+}
+
+.dropdown-content div {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdown-content div:hover {
+  background: #e0e0e0;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
 .content{
     margin-top:40px;    
+}
+
+.no-underline{
+    text-decoration: none;
+}
+
+.white-font{
+    color: #ffffff;
 }

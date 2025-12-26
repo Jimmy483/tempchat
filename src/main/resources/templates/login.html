@@ -16,7 +16,6 @@
       return;
     }
 
-    alert("just before");
     $.ajax({
       url:'/checkCredentials',
       method: 'GET',
@@ -25,7 +24,6 @@
         password
       },
       success:function(loginSuccess){
-        alert("result = " + loginSuccess);
         if(loginSuccess){
           window.location.href='/';
         }else{

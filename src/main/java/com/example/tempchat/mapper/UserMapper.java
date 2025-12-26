@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring", builder = @Builder(disableBuilder = false))
+@Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
 public interface UserMapper {
 
 //    adding disableBuilder = false solved the null issue. better practice than using mapping

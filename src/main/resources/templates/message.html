@@ -1,9 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <link type="text/css" href="/css/messageCss.css" rel="stylesheet" ></script>
 <div class="container content">
     <div class="row">
         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
         	<div class="card">
-        		<div class="card-header">Chat</div>
+        		<div class="card-header">
+					Chat
+				<div class="dropdown">
+					<div class="dropdown-button">Options</div>
+					<div class="dropdown-content">
+						<div th:with="userLoggedIn=${session.username!=null?true:false}">
+							<a href="/menu/logout"  class="no-underline white-font">
+								<span th:if="${userLoggedIn}">Logout</span>
+								<span th:unless="${userLoggedIn}">Login</span>
+							</a>
+						</div>
+					</div>
+				</div>
+				</div>
         		<div class="card-body height3">
         			<ul class="chat-list">
         				<li class="in">
@@ -42,59 +57,6 @@
         				<li class="out">
         					<div class="chat-img">
         						<img alt="Avtar" src="https://bootdey.com/img/Content/avatar/avatar6.png">
-        					</div>
-        					<div class="chat-body">
-        						<div class="chat-message">
-        							<h5>Serena</h5>
-        							<p>Tofu master best deal</p>
-        						</div>
-        					</div>
-        				</li>
-        			</ul>
-        		</div>
-        	</div>
-        </div>
-        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-        	<div class="card">
-        		<div class="card-header">Chat</div>
-        		<div class="card-body height3">
-        			<ul class="chat-list">
-        				<li class="in">
-        					<div class="chat-img">
-        						<img alt="Avtar" src="https://bootdey.com/img/Content/avatar/avatar2.png">
-        					</div>
-        					<div class="chat-body">
-        						<div class="chat-message">
-        							<h5>Jimmy Willams</h5>
-        							<p>Raw denim heard of them tofu master cleanse</p>
-        						</div>
-        					</div>
-        				</li>
-        				<li class="out">
-        					<div class="chat-img">
-        						<img alt="Avtar" src="https://bootdey.com/img/Content/avatar/avatar3.png">
-        					</div>
-        					<div class="chat-body">
-        						<div class="chat-message">
-        							<h5>Serena</h5>
-        							<p>Next level veard</p>
-        						</div>
-        					</div>
-        				</li>
-        				<li class="in">
-        					<div class="chat-img">
-        						<img alt="Avtar" src="https://bootdey.com/img/Content/avatar/avatar2.png">
-        					</div>
-        					<div class="chat-body">
-        						<div class="chat-message">
-        							<h5 class="name">Jimmy Willams</h5>
-        							<p>Will stumptown scenes coffee viral.</p>
-        						</div>
-        					</div>
-        				</li>
-        				<li class="out">
-        					<div class="chat-img">
-        						<img alt="Avtar" src="https://bootdey.com/img/Content/avatar/avatar3.png">
         					</div>
         					<div class="chat-body">
         						<div class="chat-message">
