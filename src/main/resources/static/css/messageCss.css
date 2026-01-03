@@ -149,3 +149,30 @@ body{
 .white-font{
     color: #ffffff;
 }
+
+.messageDiv{
+    margin-top: 300px;
+}
+
+.message{
+    float: left;
+    border-radius: 8px;
+    margin-left: 5px;
+    font-size: 16px;
+    padding: 10px;
+    width: 70%;
+}
+
+.btnSend{
+    border-radius: 8px;
+    margin-left: 5px;
+    padding: 11px;
+    float: left;
+    width: 3%;
+}
+
+.developerMsg{
+    margin-left: 10px;
+    float: left;
+    width: 12%;
+}

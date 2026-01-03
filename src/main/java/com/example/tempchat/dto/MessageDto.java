@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class MessageDto {
 
     private long id;
 
-    private String username;
+    private String message;
 
-    private String firstName;
+    private long groupId;
 
-    private String lastName;
+    private long sentBy;
 }
