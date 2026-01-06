@@ -1,6 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<link type="text/css" href="/css/messageCss.css" rel="stylesheet" ></script>
+<link type="text/css" href="/css/messageCss.css" rel="stylesheet" >
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+	function sendMessage(groupId){
+		var message = document.getElementsByClassName('message')[0].value
+		console.log('group id is ' + groupId);
+		alert('g id is = ' + groupId);
+		$.ajax({
+			method:"POST",
+			url:"/message/sendMessage",
+			data:{
+				message,
+				groupId
+			},
+			success:function(data){
+				// if(data==false)
+				document.querySelector('.message').value = '';
+				alert('success');
+			},
+			error:function(){
+				alert('Oops!');
+			}
+		})
+	}
+</script>
 <div class="container content">
     <div class="row">
         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
@@ -71,7 +95,7 @@
         </div>
 		<div class="messageDiv">
 			<input type="textbox" class="message">
-			<input type="button" class="btnSend" value=">">
+			<input type="button" class="btnSend" value=">" th:attr="data-group-id=${groupId}" onclick="sendMessage(this.dataset.groupId)">
 			<div class="developerMsg">
 				<marquee>Developed by Gmi Shelby</marquee>
 			</div>

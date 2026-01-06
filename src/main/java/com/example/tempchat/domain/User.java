@@ -1,9 +1,7 @@
 package com.example.tempchat.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
@@ -28,4 +26,8 @@ public class User {
 
     @Column(name="lName")
     private String lastName;
+
+    public void jpt(){
+        System.out.println(getId());
+    }
 }

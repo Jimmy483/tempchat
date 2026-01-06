@@ -21,10 +21,10 @@ public class Message {
     private String message;
 
     @ManyToOne
-    @JoinColumn(name = "group_list", referencedColumnName = "id")
+    @JoinColumn(name = "group_id", referencedColumnName = "id")
     private GroupList groupList;
 
     @ManyToOne
-    @JoinColumn(name = "user", referencedColumnName = "id")
+    @JoinColumn(name = "sent_by", referencedColumnName = "id")
     private User user;
 }

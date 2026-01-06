@@ -1,6 +1,8 @@
 package com.example.tempchat.controller;
 
+import com.example.tempchat.domain.User;
 import com.example.tempchat.dto.UserDto;
+import com.example.tempchat.repository.UserRepository;
 import com.example.tempchat.service.LoginService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -19,8 +21,15 @@ public class LoginController {
 
     private LoginService loginService;
 
+    private UserRepository userRepository;
+
     @GetMapping(path="/login")
     public String goToLogin(){
+//        User user=new User();
+//        User user1=userRepository.findByUsernameAndPassword("Gmi","password").orElse(null);;
+//        user.jpt();
+//        System.out.println("id is " + user.getId());
+//        System.out.println("id  from 1  is " + user1.getId());
         return "login";
     }
 

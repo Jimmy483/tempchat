@@ -1,5 +1,6 @@
 package com.example.tempchat.service;
 
+import com.example.tempchat.SessionController;
 import com.example.tempchat.SessionUtility;
 import com.example.tempchat.domain.User;
 import com.example.tempchat.dto.UserDto;
@@ -19,6 +20,8 @@ public class LoginService {
     private final UserMapper userMapper;
 
     private UserRepository userRepository;
+
+    private SessionController sessionController;
     public Boolean isUserExists(HttpSession httpSession, String username, String password){
         User user = userRepository.findByUsernameAndPassword(username, password).orElse(null);
         System.out.println("user = " + user);
@@ -33,9 +36,6 @@ public class LoginService {
     }
 
     public void ifLoginSuccessFull(HttpSession httpSession, UserDto userDto){
-        SessionUtility.setSessionAttribute(httpSession,"id", userDto.getId() );
-        SessionUtility.setSessionAttribute(httpSession,"username", userDto.getUsername() );
-        SessionUtility.setSessionAttribute(httpSession,"firstName", userDto.getFirstName() );
-        SessionUtility.setSessionAttribute(httpSession,"lastName", userDto.getLastName() );
+        sessionController.setSessionValue(httpSession, userDto);
     }
 }
