@@ -11,5 +11,5 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
 //    List<Message> findByGroupCode(String groupCode);
 
-    List<Message> findAllMessageById(Long id);
+    List<Message> findAllByGroupList_Id(Long id);
 }

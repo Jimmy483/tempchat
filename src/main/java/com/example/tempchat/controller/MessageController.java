@@ -20,8 +20,9 @@ public class MessageController {
 
     @GetMapping(path = "/{id}")
     public String renderMessageList(HttpSession httpSession, Model model, @PathVariable Long id){
-        List<Message> messageList = messageService.getMessageContent(id);
+        List<Object> messageList = messageService.getMessageContent(id);
         model.addAttribute("groupId", id);
+        model.addAttribute("message", messageList);
         System.out.println("message list = " + messageList);
         System.out.println("session username" + SessionUtility.getSessionAttribute(httpSession, "username"));
         System.out.println("session username" + SessionUtility.getSessionAttribute(httpSession, "userId"));

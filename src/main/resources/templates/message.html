@@ -2,7 +2,64 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <link type="text/css" href="/css/messageCss.css" rel="stylesheet" >
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
+	$(document).ready(function(){
+
+		const allMessage = /*[[${message}]]*/ '';
+		const currentUserId = /*[[${session.userId}]]*/ ''
+
+		console.log("message = " + allMessage);
+
+		const chatList = document.querySelector('.chat-list');
+		Object.entries(allMessage).forEach((ob)=>{
+			const chat = document.createElement('li');
+			console.log("id value = " + ob.id);
+			// console.log("sender id = " + ob.user.id);
+			// Object.entries(ob).forEach((value)=>{
+			// 	console.log("id = " , value.id);
+			// })
+			if(value.user.id==currentUserId){
+				chat.className = 'out';
+			}else{
+				chat.className = 'in';
+			}
+		    chatList.appendChild(chat);
+		})
+
+		// alert('test = ' + allMessage + " id = " + groupid);
+		
+		// chatList.innerHTML = '';
+
+		
+
+		const imgDiv = document.createElement('div');
+		imgDiv.className = 'chat-img';
+		chat.appendChild(imgDiv);
+
+		const userImg = document.createElement('img');
+		userImg.alt='username';
+		userImg.src='https://bootdey.com/img/Content/avatar/avatar1.png';
+		imgDiv.appendChild(userImg);
+
+		const chatBodyDiv = document.createElement('div');
+		chatBodyDiv.className='chat-body';
+		chat.appendChild(chatBodyDiv);
+
+		const chatMessageDiv = document.createElement('div');
+		chatMessageDiv.className = 'chat-message';
+		chatBodyDiv.appendChild(chatMessageDiv);
+
+		const header = document.createElement('h5');
+		header.textContent = 'Try User';
+		chatMessageDiv.appendChild(header);
+
+		const chatMessage = document.createElement('p');
+		chatMessage.textContent = 'Hello there';
+		chatMessageDiv.appendChild(chatMessage);
+
+
+
+	})
 	function sendMessage(groupId){
 		var message = document.getElementsByClassName('message')[0].value
 		console.log('group id is ' + groupId);

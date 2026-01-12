@@ -9,7 +9,11 @@ import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -21,8 +25,15 @@ public class MessageService {
 
     private UserService userService;
 
-    public List<Message> getMessageContent(Long id){
-        return messageRepository.findAllMessageById(id);
+    public List<Object> getMessageContent(Long id){
+        return messageRepository.findAllByGroupList_Id(id).stream().map(message -> {
+            Map<String, Object> returnMap = new HashMap<>();
+            returnMap.put("id", message.getId());
+            returnMap.put("content", message.getMessage());
+            returnMap.put("groupId", message.getGroupList().getId());
+            returnMap.put("senderId", message.getUser().getId());
+            return returnMap;
+        }).collect(Collectors.toList());
     }
 
     public Boolean saveMessage(HttpSession httpSession, String message, long groupId){
