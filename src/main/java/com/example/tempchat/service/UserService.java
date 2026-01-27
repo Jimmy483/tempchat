@@ -17,4 +17,8 @@ public class UserService {
     public User getCurrentUser(HttpSession httpSession) {
         return userRepository.findById(Long.parseLong(SessionUtility.getSessionAttribute(httpSession,"userId").toString())).orElse(null);
     }
+
+    public User findUserById(Long id){
+        return userRepository.findById(id).orElse(null);
+    }
 }

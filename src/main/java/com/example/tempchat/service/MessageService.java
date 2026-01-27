@@ -28,10 +28,12 @@ public class MessageService {
     public List<Object> getMessageContent(Long id){
         return messageRepository.findAllByGroupList_Id(id).stream().map(message -> {
             Map<String, Object> returnMap = new HashMap<>();
+            User user= userService.findUserById(message.getUser().getId());
             returnMap.put("id", message.getId());
             returnMap.put("content", message.getMessage());
             returnMap.put("groupId", message.getGroupList().getId());
             returnMap.put("senderId", message.getUser().getId());
+            returnMap.put("senderName", user.getUsername());
             return returnMap;
         }).collect(Collectors.toList());
     }

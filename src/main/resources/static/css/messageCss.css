@@ -61,6 +61,7 @@ body{
     width: 70%;
 }
 
+/*  */
 .chat-list .in .chat-message:before {
     left: -12px;
     border-bottom: 20px solid transparent;
@@ -138,9 +139,9 @@ body{
   display: block;
 }
 
-.content{
+/* .content{
     margin-top:40px;    
-}
+} */
 
 .no-underline{
     text-decoration: none;
@@ -151,7 +152,7 @@ body{
 }
 
 .messageDiv{
-    margin-top: 300px;
+    margin-top: 200px;
 }
 
 .message{
