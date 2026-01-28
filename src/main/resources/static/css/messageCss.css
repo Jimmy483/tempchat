@@ -1,4 +1,5 @@
 body{
+    overflow: hidden;
     background:#eee;    
 }
 .chat-list {
@@ -151,10 +152,6 @@ body{
     color: #ffffff;
 }
 
-.messageDiv{
-    margin-top: 200px;
-}
-
 .message{
     float: left;
     border-radius: 8px;
@@ -176,4 +173,9 @@ body{
     margin-left: 10px;
     float: left;
     width: 12%;
+}
+
+.card-body{
+    overflow-y: scroll;
+    height: 610px;
 }

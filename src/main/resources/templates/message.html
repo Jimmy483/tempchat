@@ -8,13 +8,9 @@
 		const allMessage = /*[[${message}]]*/ '';
 		const currentUserId = /*[[${session.userId}]]*/ ''
 
-		console.log("message = " + allMessage);
-
 		const chatList = document.querySelector('.chat-list');
 		Object.entries(allMessage).forEach((ob)=>{
 			const chatLi = document.createElement('li');
-			console.log('current user id = ' + currentUserId);
-			console.log('ob id is = ' + ob[1].senderId);
 			if(ob[1].senderId==currentUserId){
 				chatLi.className = 'out';
 			}else{
@@ -69,12 +65,49 @@
 			},
 			success:function(data){
 				document.querySelector('.message').value = '';
-				alert('success');
+				appendMessage(message);
 			},
 			error:function(){
 				alert('Oops!');
 			}
 		})
+	}
+
+	function appendMessage(message){
+
+		const currentUserName = /*[[${session.username}]]*/ '';
+
+		const chatList = document.querySelector('.chat-list');
+		const chatLi = document.createElement('li');
+		chatLi.className = 'out';
+		chatList.appendChild(chatLi);
+
+		const imgDiv = document.createElement('div');
+		imgDiv.className = 'chat-img';
+		chatLi.appendChild(imgDiv);
+
+		const userImg = document.createElement('img');
+		userImg.alt='username';
+		userImg.src='https://bootdey.com/img/Content/avatar/avatar1.png';
+		imgDiv.appendChild(userImg);
+
+		const chatBodyDiv = document.createElement('div');
+		chatBodyDiv.className='chat-body';
+		chatLi.appendChild(chatBodyDiv);
+
+		const chatMessageDiv = document.createElement('div');
+		chatMessageDiv.className = 'chat-message';
+		chatBodyDiv.appendChild(chatMessageDiv);
+
+		const header = document.createElement('h5');
+		header.textContent = currentUserName;
+		chatMessageDiv.appendChild(header);
+
+		const chatMessage = document.createElement('p');
+		chatMessage.textContent = message;
+		chatMessageDiv.appendChild(chatMessage);
+
+
 	}
 </script>
 <div class="container content">
@@ -95,15 +128,15 @@
 					</div>
 				</div>
 				</div>
-        		<div class="card-body height3">
+        		<div class="card-body">
         			<ul class="chat-list">
         				
         			</ul>
         		</div>
         	</div>
         </div>
-		<div class="messageDiv">
-			<input type="textbox" class="message" th:attr="data-group-id=${groupId}" onkeypress="checkKey(this.dataset.groupId, event)">
+		<div class="messageDiv" th:if="${session.userId!=null}">
+			<input id="messageContent" type="textbox" class="message" th:attr="data-group-id=${groupId}" onkeypress="checkKey(this.dataset.groupId, event)">
 			<input type="button" class="btnSend" value=">" th:attr="data-group-id=${groupId}" onclick="sendMessage(this.dataset.groupId)">
 			<div class="developerMsg">
 				<marquee>Developed by Gmi Shelby</marquee>
