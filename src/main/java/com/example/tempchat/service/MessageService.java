@@ -3,6 +3,7 @@ package com.example.tempchat.service;
 import com.example.tempchat.domain.GroupList;
 import com.example.tempchat.domain.Message;
 import com.example.tempchat.domain.User;
+import com.example.tempchat.dto.MessageSent;
 import com.example.tempchat.repository.GroupListRepository;
 import com.example.tempchat.repository.MessageRepository;
 import jakarta.servlet.http.HttpSession;
@@ -38,9 +39,9 @@ public class MessageService {
         }).collect(Collectors.toList());
     }
 
-    public Boolean saveMessage(HttpSession httpSession, String message, long groupId){
+    public Boolean saveMessage(long userId, String message, long groupId){
         GroupList group = groupListRepository.findById(groupId).orElse(null);
-        User user = userService.getCurrentUser(httpSession);
+        User user = userService.getCurrentUser(userId);
         if(group!=null){
             Message msg = new Message();
             msg.setMessage(message);
@@ -51,5 +52,15 @@ public class MessageService {
         }
         return false;
 
+    }
+
+    public Map<String, Object> toMessageMapWithUsername(MessageSent messageSent){
+        Map<String, Object> toReturnMap = new HashMap<>();
+        User user =userService.getCurrentUser(messageSent.getSentBy());
+        toReturnMap.put("senderId", messageSent.getSentBy());
+        toReturnMap.put("message", messageSent.getMessage());
+        toReturnMap.put("senderUsername",user.getUsername());
+        toReturnMap.put("groupdId", messageSent.getGroupId()); // for future use in case there are multiple groups
+        return toReturnMap;
     }
 }

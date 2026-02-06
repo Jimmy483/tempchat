@@ -28,7 +28,6 @@ public class LoginService {
 
         if (user != null) {
             var userDto = userMapper.toDto(user);
-            System.out.println("user dto = " + userDto);
             ifLoginSuccessFull(httpSession, userDto);
             return true;
         }

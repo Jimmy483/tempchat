@@ -2,8 +2,94 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <link type="text/css" href="/css/messageCss.css" rel="stylesheet" >
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 <script type="text/javascript" th:inline="javascript">
 	$(document).ready(function(){
+
+
+		let stompClient=null;
+
+	    function connect(){
+		    const socket = new SockJS('/chat');
+		    stompClient = Stomp.over(socket);
+			console.log("socket = ", socket);
+			console.log("stompClient = ", stompClient);
+
+		    stompClient.connect({}, function(){
+				console.log("inside");
+			    stompClient.subscribe('/topic/messages', function(msg){
+				    const message = JSON.parse(msg.body);
+					document.querySelector('.message').value = '';
+				    appendMessage(message);
+					console.log("msg = " + message);
+			    })
+		    })
+	    }
+
+		connect();
+
+
+		function sendMessage(id){
+		    var text = document.getElementsByClassName('message')[0].value
+		    const currentUserId = /*[[${session.userId}]]*/ ''
+		    stompClient.send("/app/chat", {}, JSON.stringify({
+                message: text,
+                groupId: id,
+				sentBy: currentUserId
+            }
+	    ));
+		
+	    }
+
+	window.checkKey = function(groupId, event){
+		if(event.key=='Enter'){
+			sendMessage(groupId);
+		}
+	}
+
+	
+
+	function appendMessage(message){
+
+		const currentUserId = /*[[${session.userId}]]*/ ''
+		const chatList = document.querySelector('.chat-list');
+		const chatLi = document.createElement('li');
+		if(message.senderId==currentUserId){
+			chatLi.className = 'out';
+		}else{
+			chatLi.className = 'in';
+		}
+		chatList.appendChild(chatLi);
+
+		const imgDiv = document.createElement('div');
+		imgDiv.className = 'chat-img';
+		chatLi.appendChild(imgDiv);
+
+		const userImg = document.createElement('img');
+		userImg.alt='username';
+		userImg.src='https://bootdey.com/img/Content/avatar/avatar1.png';
+		imgDiv.appendChild(userImg);
+
+		const chatBodyDiv = document.createElement('div');
+		chatBodyDiv.className='chat-body';
+		chatLi.appendChild(chatBodyDiv);
+
+		const chatMessageDiv = document.createElement('div');
+		chatMessageDiv.className = 'chat-message';
+		chatBodyDiv.appendChild(chatMessageDiv);
+
+		const header = document.createElement('h5');
+		header.textContent = message.senderUsername;
+		chatMessageDiv.appendChild(header);
+
+		const chatMessage = document.createElement('p');
+		chatMessage.textContent = message.message;
+		chatMessageDiv.appendChild(chatMessage);
+
+
+	}
+
 
 		const allMessage = /*[[${message}]]*/ '';
 		const currentUserId = /*[[${session.userId}]]*/ ''
@@ -48,67 +134,7 @@
 
 	})
 
-	function checkKey(groupId, event){
-		if(event.key=='Enter'){
-			sendMessage(groupId);
-		}
-	}
-
-	function sendMessage(groupId){
-		var message = document.getElementsByClassName('message')[0].value
-		$.ajax({
-			method:"POST",
-			url:"/message/sendMessage",
-			data:{
-				message,
-				groupId
-			},
-			success:function(data){
-				document.querySelector('.message').value = '';
-				appendMessage(message);
-			},
-			error:function(){
-				alert('Oops!');
-			}
-		})
-	}
-
-	function appendMessage(message){
-
-		const currentUserName = /*[[${session.username}]]*/ '';
-
-		const chatList = document.querySelector('.chat-list');
-		const chatLi = document.createElement('li');
-		chatLi.className = 'out';
-		chatList.appendChild(chatLi);
-
-		const imgDiv = document.createElement('div');
-		imgDiv.className = 'chat-img';
-		chatLi.appendChild(imgDiv);
-
-		const userImg = document.createElement('img');
-		userImg.alt='username';
-		userImg.src='https://bootdey.com/img/Content/avatar/avatar1.png';
-		imgDiv.appendChild(userImg);
-
-		const chatBodyDiv = document.createElement('div');
-		chatBodyDiv.className='chat-body';
-		chatLi.appendChild(chatBodyDiv);
-
-		const chatMessageDiv = document.createElement('div');
-		chatMessageDiv.className = 'chat-message';
-		chatBodyDiv.appendChild(chatMessageDiv);
-
-		const header = document.createElement('h5');
-		header.textContent = currentUserName;
-		chatMessageDiv.appendChild(header);
-
-		const chatMessage = document.createElement('p');
-		chatMessage.textContent = message;
-		chatMessageDiv.appendChild(chatMessage);
-
-
-	}
+	
 </script>
 <div class="container content">
     <div class="row">

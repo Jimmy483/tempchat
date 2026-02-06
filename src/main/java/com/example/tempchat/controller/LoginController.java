@@ -25,11 +25,6 @@ public class LoginController {
 
     @GetMapping(path="/login")
     public String goToLogin(){
-//        User user=new User();
-//        User user1=userRepository.findByUsernameAndPassword("Gmi","password").orElse(null);;
-//        user.jpt();
-//        System.out.println("id is " + user.getId());
-//        System.out.println("id  from 1  is " + user1.getId());
         return "login";
     }
 
