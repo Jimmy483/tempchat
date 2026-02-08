@@ -26,13 +26,12 @@ public class MessageController {
     @MessageMapping("/chat")
     @SendTo("/topic/messages")
     public Map<String, Object> send(MessageSent message){
-        System.out.println("success");
         messageService.saveMessage(message.getSentBy(), message.getMessage(), message.getGroupId());
         return messageService.toMessageMapWithUsername(message);
     }
     @GetMapping(path = "/{id}")
     public String renderMessageList(HttpSession httpSession, Model model, @PathVariable Long id){
-        List<Object> messageList = messageService.getMessageContent(id);
+        List<Object> messageList = messageService.getMessageContent(id, httpSession);
         model.addAttribute("groupId", id);
         model.addAttribute("message", messageList);
         return "message";

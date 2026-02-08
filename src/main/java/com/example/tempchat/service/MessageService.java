@@ -1,5 +1,8 @@
 package com.example.tempchat.service;
 
+import com.example.tempchat.SessionUtility;
+import com.example.tempchat.UtilityController;
+import com.example.tempchat.enums.DPImages;
 import com.example.tempchat.domain.GroupList;
 import com.example.tempchat.domain.Message;
 import com.example.tempchat.domain.User;
@@ -10,10 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -26,7 +26,8 @@ public class MessageService {
 
     private UserService userService;
 
-    public List<Object> getMessageContent(Long id){
+
+    public List<Object> getMessageContent(Long id, HttpSession httpSession){
         return messageRepository.findAllByGroupList_Id(id).stream().map(message -> {
             Map<String, Object> returnMap = new HashMap<>();
             User user= userService.findUserById(message.getUser().getId());
@@ -35,6 +36,11 @@ public class MessageService {
             returnMap.put("groupId", message.getGroupList().getId());
             returnMap.put("senderId", message.getUser().getId());
             returnMap.put("senderName", user.getUsername());
+            if(SessionUtility.getSessionAttribute(httpSession, "displayImage")!=null && message.getUser().getId()==SessionUtility.getSessionAttribute(httpSession, "userId")){
+                returnMap.put("displayPicture", SessionUtility.getSessionAttribute(httpSession, "displayImage"));
+            }else{
+                returnMap.put("displayPicture", "/images/" + UtilityController.getDisplayPicture() + ".jpg");
+            }
             return returnMap;
         }).collect(Collectors.toList());
     }
@@ -60,7 +66,8 @@ public class MessageService {
         toReturnMap.put("senderId", messageSent.getSentBy());
         toReturnMap.put("message", messageSent.getMessage());
         toReturnMap.put("senderUsername",user.getUsername());
-        toReturnMap.put("groupdId", messageSent.getGroupId()); // for future use in case there are multiple groups
+        toReturnMap.put("displayPicture","/images/" + UtilityController.getDisplayPicture() + ".jpg");
+        toReturnMap.put("groupId", messageSent.getGroupId()); // for future use in case there are multiple groups
         return toReturnMap;
     }
 }

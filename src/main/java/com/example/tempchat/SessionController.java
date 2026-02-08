@@ -12,7 +12,7 @@ public class SessionController {
         SessionUtility.setSessionAttribute(httpSession, "firstName", userDto.getFirstName());
         SessionUtility.setSessionAttribute(httpSession, "lastName", userDto.getLastName());
         SessionUtility.setSessionAttribute(httpSession, "userId", userDto.getId());
-
+        SessionUtility.setSessionAttribute(httpSession, "displayImage","/images/" + UtilityController.getDisplayPicture() + ".jpg");
         System.out.println("user id from session is " + userDto.getId());
     }
 

@@ -53,6 +53,7 @@
 	function appendMessage(message){
 
 		const currentUserId = /*[[${session.userId}]]*/ ''
+		const displayImage = /*[[${session.displayImage}]]*/ ''
 		const chatList = document.querySelector('.chat-list');
 		const chatLi = document.createElement('li');
 		if(message.senderId==currentUserId){
@@ -68,7 +69,11 @@
 
 		const userImg = document.createElement('img');
 		userImg.alt='username';
-		userImg.src='https://bootdey.com/img/Content/avatar/avatar1.png';
+		if(displayImage!=null && message.senderId==currentUserId){
+			userImg.src = displayImage;
+		}else{
+            userImg.src=message.displayPicture;
+		}
 		imgDiv.appendChild(userImg);
 
 		const chatBodyDiv = document.createElement('div');
@@ -110,7 +115,7 @@
 
 		    const userImg = document.createElement('img');
 		    userImg.alt='username';
-		    userImg.src='https://bootdey.com/img/Content/avatar/avatar1.png';
+		    userImg.src=ob[1].displayPicture;
 		    imgDiv.appendChild(userImg);
 
 		    const chatBodyDiv = document.createElement('div');
