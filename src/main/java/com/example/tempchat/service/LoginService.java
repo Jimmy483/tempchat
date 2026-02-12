@@ -35,6 +35,6 @@ public class LoginService {
     }
 
     public void ifLoginSuccessFull(HttpSession httpSession, UserDto userDto){
-        sessionController.setSessionValue(httpSession, userDto);
+        sessionController.setAllSessionValue(httpSession, userDto);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.tempchat.service;
 
+import com.example.tempchat.SessionController;
 import com.example.tempchat.SessionUtility;
 import com.example.tempchat.UtilityController;
 import com.example.tempchat.enums.DPImages;
@@ -28,7 +29,8 @@ public class MessageService {
 
 
     public List<Object> getMessageContent(Long id, HttpSession httpSession){
-        return messageRepository.findAllByGroupList_Id(id).stream().map(message -> {
+        Map<Long, String> dPInfoMap = new HashMap<>(UtilityController.getUserDPInfoFromSession(httpSession));
+        List<Object> mainList = messageRepository.findAllByGroupList_Id(id).stream().map(message -> {
             Map<String, Object> returnMap = new HashMap<>();
             User user= userService.findUserById(message.getUser().getId());
             returnMap.put("id", message.getId());
@@ -36,13 +38,16 @@ public class MessageService {
             returnMap.put("groupId", message.getGroupList().getId());
             returnMap.put("senderId", message.getUser().getId());
             returnMap.put("senderName", user.getUsername());
-            if(SessionUtility.getSessionAttribute(httpSession, "displayImage")!=null && message.getUser().getId()==SessionUtility.getSessionAttribute(httpSession, "userId")){
-                returnMap.put("displayPicture", SessionUtility.getSessionAttribute(httpSession, "displayImage"));
-            }else{
+            if(dPInfoMap.get(message.getUser().getId())!=null){
+                returnMap.put("displayPicture", dPInfoMap.get(message.getUser().getId()));
+            }else {
                 returnMap.put("displayPicture", "/images/" + UtilityController.getDisplayPicture() + ".jpg");
+                dPInfoMap.put(message.getUser().getId(), returnMap.get("displayPicture").toString());
             }
             return returnMap;
         }).collect(Collectors.toList());
+        SessionController.setSessionValue(httpSession,"dPInfoMap", dPInfoMap);
+        return mainList;
     }
 
     public Boolean saveMessage(long userId, String message, long groupId){
