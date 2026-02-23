@@ -12,6 +12,7 @@ import com.example.tempchat.repository.GroupListRepository;
 import com.example.tempchat.repository.MessageRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -41,11 +42,13 @@ public class MessageService {
             if(dPInfoMap.get(message.getUser().getId())!=null){
                 returnMap.put("displayPicture", dPInfoMap.get(message.getUser().getId()));
             }else {
-                returnMap.put("displayPicture", "/images/" + UtilityController.getDisplayPicture() + ".jpg");
-                dPInfoMap.put(message.getUser().getId(), returnMap.get("displayPicture").toString());
+                String displayPicture = "/images/" + UtilityController.getDisplayPicture() + ".jpg";
+                returnMap.put("displayPicture", displayPicture);
+                dPInfoMap.put(message.getUser().getId(), displayPicture);
             }
             return returnMap;
         }).collect(Collectors.toList());
+
         SessionController.setSessionValue(httpSession,"dPInfoMap", dPInfoMap);
         return mainList;
     }
@@ -65,13 +68,22 @@ public class MessageService {
 
     }
 
-    public Map<String, Object> toMessageMapWithUsername(MessageSent messageSent){
+    public Map<String, Object> toMessageMapWithUsername(MessageSent messageSent, SimpMessageHeaderAccessor headerAccessor){
         Map<String, Object> toReturnMap = new HashMap<>();
+        Map<Long, String> dpInfoMap = (Map<Long, String>) headerAccessor.getSessionAttributes().get("dPInfoMap");
+        Map<String, Object> session = headerAccessor.getSessionAttributes();
         User user =userService.getCurrentUser(messageSent.getSentBy());
         toReturnMap.put("senderId", messageSent.getSentBy());
         toReturnMap.put("message", messageSent.getMessage());
         toReturnMap.put("senderUsername",user.getUsername());
-        toReturnMap.put("displayPicture","/images/" + UtilityController.getDisplayPicture() + ".jpg");
+        if(dpInfoMap.get(messageSent.getSentBy())!=null){
+            toReturnMap.put("displayPicture",dpInfoMap.get(messageSent.getSentBy()));
+        }else {
+            String displayPic = "/images/" + UtilityController.getDisplayPicture() + ".jpg";
+            toReturnMap.put("displayPicture",displayPic);
+            dpInfoMap.put(messageSent.getSentBy(),displayPic);
+            session.put("dPInfoMap", dpInfoMap);
+        }
         toReturnMap.put("groupId", messageSent.getGroupId()); // for future use in case there are multiple groups
         return toReturnMap;
     }

@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +26,9 @@ public class MessageController {
 
     @MessageMapping("/chat")
     @SendTo("/topic/messages")
-    public Map<String, Object> send(MessageSent message){
+    public Map<String, Object> send(MessageSent message, SimpMessageHeaderAccessor headerAccessor){
         messageService.saveMessage(message.getSentBy(), message.getMessage(), message.getGroupId());
-        return messageService.toMessageMapWithUsername(message);
+        return messageService.toMessageMapWithUsername(message, headerAccessor);
     }
     @GetMapping(path = "/{id}")
     public String renderMessageList(HttpSession httpSession, Model model, @PathVariable Long id){

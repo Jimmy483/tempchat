@@ -51,7 +51,6 @@
 	
 
 	function appendMessage(message){
-
 		const currentUserId = /*[[${session.userId}]]*/ ''
 		const displayImage = /*[[${session.displayImage}]]*/ ''
 		const chatList = document.querySelector('.chat-list');
@@ -69,11 +68,7 @@
 
 		const userImg = document.createElement('img');
 		userImg.alt='username';
-		if(displayImage!=null && message.senderId==currentUserId){
-			userImg.src = displayImage;
-		}else{
-            userImg.src=message.displayPicture;
-		}
+        userImg.src=message.displayPicture;
 		imgDiv.appendChild(userImg);
 
 		const chatBodyDiv = document.createElement('div');

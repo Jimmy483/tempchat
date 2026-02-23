@@ -10,6 +10,11 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    private final HttpHandshakeInterceptor httpHandshakeInterceptor;
+
+    public WebSocketConfig(HttpHandshakeInterceptor httpHandshakeInterceptor){
+        this.httpHandshakeInterceptor =httpHandshakeInterceptor;
+    }
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.enableSimpleBroker("/topic");
@@ -19,6 +24,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/chat")
+                .addInterceptors(httpHandshakeInterceptor)
                 .withSockJS();
     }
 }

@@ -17,6 +17,7 @@ public class UtilityController {
     }
 
     public static Map<Long, String> getUserDPInfoFromSession(HttpSession httpSession){
+        System.out.println("map session value = " + (Map<Long, String>) SessionUtility.getSessionAttribute(httpSession, "dPInfoMap"));
         return  (Map<Long, String>) SessionUtility.getSessionAttribute(httpSession, "dPInfoMap");
     }
 }
