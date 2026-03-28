@@ -21,3 +21,10 @@ spring:
     #    initialization-mode: always
     hikari:
       maximum-pool-size: 10
+  logging:
+    level:
+      org:
+        springframework:
+          security: DEBUG
+          web:
+            socket: DEBUG

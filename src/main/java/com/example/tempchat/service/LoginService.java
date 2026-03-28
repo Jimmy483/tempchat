@@ -10,7 +10,14 @@ import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.apache.catalina.manager.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -36,5 +43,9 @@ public class LoginService {
 
     public void ifLoginSuccessFull(HttpSession httpSession, UserDto userDto){
         sessionController.setAllSessionValue(httpSession, userDto);
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        Authentication auth = new UsernamePasswordAuthenticationToken(userDto, null, authorities);
+        System.out.println("auth value = " + auth);
+        SecurityContextHolder.getContext().setAuthentication(auth);
     }
 }

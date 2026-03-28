@@ -1,6 +1,7 @@
 package com.example.tempchat.mapper;
 
 import com.example.tempchat.domain.User;
+import com.example.tempchat.dto.UserCreateDto;
 import com.example.tempchat.dto.UserDto;
 import lombok.Data;
 import org.mapstruct.Builder;
@@ -14,4 +15,6 @@ public interface UserMapper {
 //    adding disableBuilder = false solved the null issue. better practice than using mapping
 
     UserDto toDto(User user);
+
+    UserCreateDto toUserCreateDto(User user);
 }

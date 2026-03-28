@@ -8,6 +8,7 @@ import com.example.tempchat.service.MessageService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,8 @@ public class MessageController {
 
     @MessageMapping("/chat")
     @SendTo("/topic/messages")
-    public Map<String, Object> send(MessageSent message, SimpMessageHeaderAccessor headerAccessor){
+    public Map<String, Object> send(@Payload MessageSent message, SimpMessageHeaderAccessor headerAccessor){
+        System.out.println("test sending message");
         messageService.saveMessage(message.getSentBy(), message.getMessage(), message.getGroupId());
         return messageService.toMessageMapWithUsername(message, headerAccessor);
     }
