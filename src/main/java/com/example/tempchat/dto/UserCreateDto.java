@@ -13,7 +13,7 @@ public class UserCreateDto {
 
     private String password;
 
-    private String fName;
+    private String firstName;
 
-    private String lName;
+    private String lastName;
 }

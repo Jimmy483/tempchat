@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,15 +29,19 @@ public class LoginService {
 
     private UserRepository userRepository;
 
+    private BCryptPasswordEncoder passwordEncoder;
+
     private SessionController sessionController;
     public Boolean isUserExists(HttpSession httpSession, String username, String password){
-        User user = userRepository.findByUsernameAndPassword(username, password).orElse(null);
-        System.out.println("user = " + user);
+        User user = userRepository.findByUsername(username).orElse(null);
 
         if (user != null) {
-            var userDto = userMapper.toDto(user);
-            ifLoginSuccessFull(httpSession, userDto);
-            return true;
+            if(passwordEncoder.matches(password,user.getPassword())){
+                var userDto = userMapper.toDto(user);
+                ifLoginSuccessFull(httpSession, userDto);
+                return true;
+            }
+            return false;
         }
         return false;
     }
@@ -45,7 +50,6 @@ public class LoginService {
         sessionController.setAllSessionValue(httpSession, userDto);
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
         Authentication auth = new UsernamePasswordAuthenticationToken(userDto, null, authorities);
-        System.out.println("auth value = " + auth);
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 }

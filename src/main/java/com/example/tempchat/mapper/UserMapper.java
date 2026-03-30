@@ -17,4 +17,7 @@ public interface UserMapper {
     UserDto toDto(User user);
 
     UserCreateDto toUserCreateDto(User user);
+
+    @Mapping(target = "id", ignore = true)
+    User toUserCreateEntity(UserCreateDto userCreateDto);
 }
