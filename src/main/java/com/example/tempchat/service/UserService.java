@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class UserService {
@@ -34,5 +36,11 @@ public class UserService {
         userCreateDto.setPassword(password);
         User user = userMapper.toUserCreateEntity(userCreateDto);
         userRepository.save(user);
+    }
+
+    public String checkIfUserExists(String username){
+        User user=userRepository.findByUsername(username).orElse(null);
+        System.out.println("user = " + user);
+        return user!=null?"true":"false";
     }
 }

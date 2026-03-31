@@ -29,4 +29,10 @@ public class RegistrationController {
         userService.createUser(userCreateDto);
         return "redirect:/login";
     }
+
+    @ResponseBody
+    @GetMapping(path="checkUser")
+    public String checkIfUserExists(@RequestParam("username") String username){
+        return userService.checkIfUserExists(username);
+    }
 }
